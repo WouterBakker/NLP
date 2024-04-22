@@ -11,6 +11,10 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 word_index_dict = {}
 
 # TODO: read brown_vocab_100.txt into word_index_dict
+vocab = open("brown_vocab_100.txt")
+
+
+
 
 # TODO: write word_index_dict to word_to_index_100.txt
 
