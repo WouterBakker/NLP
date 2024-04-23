@@ -30,7 +30,7 @@ counts = np.zeros(len(vocab)) #TODO: initialize counts to a zero vector
 
 #TODO: iterate through file and update counts
 for i, sent in enumerate(f):
-    stripping = sent.replace("<s>","").replace("</s>", "").rstrip().lower().split() #go through each sentence in the file, remove <s> and </s>, strip the whitespace, convert to lowercase and split the sentence to individual words
+    stripping = sent.rstrip().lower().split() #go through each sentence in the file, remove <s> and </s>, strip the whitespace, convert to lowercase and split the sentence to individual words
     for words in stripping: #go through each word of each sentence
         counts[list(word_index_dict.keys()).index(words)] += 1 #update the number of words mentioned in the given file
     
