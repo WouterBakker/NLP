@@ -41,7 +41,9 @@ for sent in f:
         ind_x = word_index_dict[prev_word]
         counts[ind_x, ind_y] += 1
         prev_word = next_word
-        
+
+
+counts += 0.1
 
 # normalize counts
 probs = normalize(counts, norm='l1', axis=1)
@@ -63,10 +65,8 @@ fourprobs = [probs[all_ind, the_ind],
 
 print(fourprobs)
 
-
 with open("bigram_probs.txt", 'w') as file:
     for p in fourprobs:
         file.write(f"{p}\n")
-
 
 f.close()
