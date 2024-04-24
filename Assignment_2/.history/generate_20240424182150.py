@@ -43,7 +43,7 @@ start_word: only used in the bigram model, the word it starts generating from. I
 def GENERATE(word_index_dict, probs, model_type, max_words, start_word):
     # returnSTR = ""
     
-    returnSTR = start_word + " "
+    returnSTR = start_word
     
     index_word_dict = {v: k for k, v in word_index_dict.items()}
     num_words = 0

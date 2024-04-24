@@ -1,0 +1,73 @@
+import numpy as np
+from sklearn.preprocessing import normalize
+from generate import GENERATE
+import random
+import codecs
+
+
+
+##### Word indices
+
+vocab = codecs.open("brown_vocab_100.txt")
+
+#load the indices dictionary
+word_index_dict = {}
+for i, line in enumerate(vocab):
+    #import part 1 code to build dictionary
+    word_index_dict[line.rstrip()] = i
+
+
+##### Unigram model
+
+f = open("brown_100.txt")
+
+counts = np.zeros(len(word_index_dict)) #initialize counts to a zero vector
+
+#iterate through file and update counts
+for sent in f:
+    sent_list = sent.lower().split()
+
+    for word in sent_list:
+        ind = word_index_dict[word]
+        counts[ind] += 1
+
+f.close()
+
+#normalize counts. 
+probs_unigram = counts / np.sum(counts)
+
+
+
+
+##### Bigram model
+
+
+f = codecs.open("brown_100.txt")
+
+counts = np.zeros((len(word_index_dict), len(word_index_dict))) #initialize numpy 0s matrix
+
+#iterate through file and update counts
+prev_word = "<s>"
+
+for sent in f:
+    sent_list = sent.lower().split()
+    for word in sent_list:
+        next_word = word
+        ind_y = word_index_dict[next_word]
+        ind_x = word_index_dict[prev_word]
+        counts[ind_x, ind_y] += 1
+        prev_word = next_word
+        
+
+# normalize counts
+probs_bigram = normalize(counts, norm='l1', axis=1)
+
+
+
+
+
+
+##### Generators
+
+GENERATE(word_index_dict, probs_unigram, "unigram", 10, "the") # sentence doesnt always start with start word? (fixed in generate.py)
+GENERATE(word_index_dict, probs_bigram, "bigram", 100, "the")

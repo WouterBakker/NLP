@@ -41,10 +41,7 @@ start_word: only used in the bigram model, the word it starts generating from. I
 
 
 def GENERATE(word_index_dict, probs, model_type, max_words, start_word):
-    # returnSTR = ""
-    
-    returnSTR = start_word + " "
-    
+    returnSTR = ""
     index_word_dict = {v: k for k, v in word_index_dict.items()}
     num_words = 0
 
@@ -53,7 +50,7 @@ def GENERATE(word_index_dict, probs, model_type, max_words, start_word):
 
         #using https://stackoverflow.com/questions/483666/python-reverse-invert-a-mapping
         
-        # returnSTR = start_word + " "
+        returnSTR = start_word + " "
         while(True):
             wordIndex = np.random.choice(len(word_index_dict), 1, p=list(probs))
             word = index_word_dict[wordIndex[0]]
@@ -66,7 +63,7 @@ def GENERATE(word_index_dict, probs, model_type, max_words, start_word):
 
     #been passed a matrix of probabilities, where each row is the previous word. 
     if model_type == "bigram":
-        # returnSTR = start_word + " "
+        returnSTR = start_word + " "
         prevWord = start_word
         while(True):
             wordIndex = np.random.choice(len(word_index_dict), 1, p=list(probs[word_index_dict[prevWord]]))

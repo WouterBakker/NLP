@@ -24,9 +24,11 @@ for i, line in enumerate(vocab):
     word_index_dict[line.rstrip()] = i
 
 
+
 f = codecs.open("brown_100.txt")
 
 counts = np.zeros((len(word_index_dict), len(word_index_dict))) #initialize numpy 0s matrix
+
 
 #iterate through file and update counts
 prev_word = "<s>"
