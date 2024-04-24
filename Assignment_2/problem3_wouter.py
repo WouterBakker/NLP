@@ -10,8 +10,6 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 
 import numpy as np
 from sklearn.preprocessing import normalize
-from generate import GENERATE
-import random
 import codecs
 
 
