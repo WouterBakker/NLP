@@ -27,11 +27,14 @@ f = codecs.open("brown_100.txt")
 counts = np.zeros((len(word_index_dict), len(word_index_dict))) #initialize numpy 0s matrix
 
 #iterate through file and update counts
-prev_word = "<s>"
+
 
 for sent in f:
     sent_list = sent.lower().split()
+    prev_word = "<s>"
     for word in sent_list:
+        if word == "<s>":
+            next
         next_word = word
         ind_y = word_index_dict[next_word]
         ind_x = word_index_dict[prev_word]
