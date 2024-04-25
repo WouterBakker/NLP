@@ -33,7 +33,7 @@ for sent in f:
     sent_list = sent.lower().split()
     prev_word = "<s>"
     for word in sent_list:
-        if word == "<s>":
+        if prev_word == "<s>":
             next
         next_word = word
         ind_y = word_index_dict[next_word]
