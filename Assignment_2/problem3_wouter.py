@@ -28,13 +28,14 @@ counts = np.zeros((len(word_index_dict), len(word_index_dict))) #initialize nump
 
 #iterate through file and update counts
 
-
+prev_word = "<s>"
+i = 0 #ensures that first word is skipped
 for sent in f:
     sent_list = sent.lower().split()
-    prev_word = "<s>"
     for word in sent_list:
-        if prev_word == "<s>":
-            next
+        if i == 0:
+            i+=1
+            continue
         next_word = word
         ind_y = word_index_dict[next_word]
         ind_x = word_index_dict[prev_word]
