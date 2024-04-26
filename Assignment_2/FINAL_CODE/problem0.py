@@ -6,34 +6,37 @@ from collections import defaultdict, Counter, OrderedDict
 
 ### Compute a list of unique words sorted by descending frequency for entire corpus
 # Counts of each words
-wordcounts = Counter(brown.words())
+all_words = brown.words()
+all_words_decapitalized = [x.lower() for x in all_words]
+
+wordcounts = Counter(all_words_decapitalized)
 # most frequent words
 sorted_wordcounts = dict(wordcounts.most_common())
-
-
 
 # brown.categories() #show categories in brown corpus
 
 ### Compute a list of unique words sorted by descending frequency for two categories
 # subset two categories
-genre_adventure = brown.words(categories='adventure')   
-genre_news = brown.words(categories='news')   
+genre_adventure_with_capitals = brown.words(categories='adventure')   
+genre_adventure = [x.lower() for x in genre_adventure_with_capitals] #remove capital letters for proper counting
+genre_news_with_capitals = brown.words(categories='news')   
+genre_news = [x.lower() for x in genre_news_with_capitals] #remove capital letters for proper counting
 
 # most frequent words
 sorted_wordcounts_adventure = dict(Counter(genre_adventure).most_common())
 sorted_wordcounts_news = dict(Counter(genre_news).most_common())
 
 
-# The number of tokens equals the number of word instantiations; since the corpus is tokenized by nltk, this equals the number of words.
-n_tokens = len(brown.words())
+# The number of tokens equals the total number of word instantiations
+n_tokens = len(all_words_decapitalized)
 print(f"Number of tokens: {n_tokens}")
 
-# The number of unique words then represent the types
+# The number types, aka the number of unique words
 n_types = len(wordcounts)
 print(f"Number of types: {n_types}")
 
-# The number of words equals the number of tokens
-print(f"Number of words: {n_tokens}")
+# The number of words 
+print(f"Number of words: {len(all_words)}")
 
 
 # Average nr of words per sentence
