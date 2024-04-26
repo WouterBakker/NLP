@@ -11,7 +11,7 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 import numpy as np
 from generate import GENERATE
 
-
+### Unigram probabilities
 vocab = open("brown_vocab_100.txt")
 
 #load the indices dictionary
@@ -24,15 +24,18 @@ f = open("brown_100.txt")
 
 counts = np.zeros(len(word_index_dict)) #initialize counts to a zero vector
 
+## Calculate unigram probabilities
 #iterate through file and update counts
 for sent in f:
     sent_list = sent.lower().split()
-
     for word in sent_list:
         ind = word_index_dict[word]
         counts[ind] += 1
 
 f.close()
+
+
+
 
 #normalize and writeout counts. 
 
@@ -40,3 +43,12 @@ print(counts)
 probs = counts / np.sum(counts)
 print(probs[0])
 print(probs[-1])
+
+
+# Write probs to unigram_probs.txt
+with open('word_to_index_100.txt', 'w') as file:
+    for key, value in word_index_dict.items():
+        file.write(f'{key}: {value}\n')
+
+file.close()
+

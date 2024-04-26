@@ -25,9 +25,15 @@ p6 = ["agriculture", "teacher", ","]
 
 ps_three = [p1, p2, p3, p4, p5, p6]
 
+
+
+
+
+
+
 # Initializes a defaultdict of structure:
 ## Word1: Word2: Word3: count
-## e.g., in: the: past: 1
+## e.g., in: the: past: 0
 dd = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
 
 
@@ -48,7 +54,7 @@ for sent in f:
         if hit:
             dd[wordlist[0]][wordlist[1]][wordlist[2]] += 1
         if len(wordlist) == 3:
-            # removes word to ensure length of wordlist is always 2
+            # removes word to ensure length of wordlist is always 2 (last two words)
             wordlist = wordlist[1:]
         if wordlist in ps_two:
             hit = True
@@ -56,31 +62,31 @@ for sent in f:
 
 f.close()
 
-dd["in"]["the"]["past"] / sum(dd["in"]["the"].values())
-# dd["in"]["the"]["time"] / sum(dd["in"]["the"].values())
-# dd["the"]["jury"]["said"] / sum(dd["in"]["the"].values())
-# dd["the"]["jury"]["recommended"] / sum(dd["in"]["the"].values())
-# dd["jury"]["said"]["that"] / sum(dd["in"]["the"].values())
-# dd["agriculture"]["teacher"][","] / sum(dd["in"]["the"].values())
 
 
 list_probs = []
 
-for p in ps_three:
-    #total count for the values in ps_two, the conditioning variable
-    values = dd[p[0]][p[1]].values()
-    #count of target value, the random variable we want to obtain the likelihood for
+for p in ps_three:    
+    #count of target value, the random variable we want to obtain the likelihood for, e.g. "past" in P(past|in, the)
     target_value = dd[p[0]][p[1]][p[2]]
-    smoothed_values = [x + 0.1 for x in dd["in"]["the"].values()]
+    # Obtain the conditioning variable, e.g. "in, the" in P(past|in, the)
+    conditioning_variable = dd[p[0]][p[1]]
+    #total count for the values in ps_two, the conditioning variable
+    values = conditioning_variable.values()
     p_unsmoothed = target_value / sum(values)
-    p_smoothed = target_value / sum(smoothed_values)
+    ## To obtain smoothed count:
+    ### There are 813 words in the corpus, and every word should get +0.1
+    ### So, we need to obtain the complement of words that are not in p(x|y,z): 813 - #words_in_p(x|y,z)
+    ### All counts for those words are 0, so complement*0.1 gives the right value to calculate smoothed probability
+    smoothed_values = [x + 0.1 for x in conditioning_variable.values()] # obtain smoothed counts by adding 0.1 to the values
+    complement_smoothed_values = 0.1*(813 - len(smoothed_values))
+    p_smoothed = (target_value+0.1) / (sum(smoothed_values) + complement_smoothed_values)
 
     list_probs.append([p_unsmoothed, p_smoothed])
 
 
-print("smoothed value | unsmoothed value")
+print("Unsmoothed value | smoothed value")
 for p in list_probs:
     print(f"{p[0]} | {p[1]}")
-    
-    
-    
+
+

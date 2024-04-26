@@ -12,7 +12,7 @@ import numpy as np
 from sklearn.preprocessing import normalize
 import codecs
 
-
+### Unsmoothed bigram probabilities
 vocab = codecs.open("brown_vocab_100.txt")
 
 #load the indices dictionary
@@ -61,7 +61,9 @@ fourprobs = [probs[all_ind, the_ind],
                 probs[the_ind, campaign_ind],
                 probs[anonymous_ind, calls_ind]]
 
-print(fourprobs)
+print(f"p(the|all): {fourprobs[0]}")
+print(f"p(jury|the): {fourprobs[1]}")
+
 
 
 with open("bigram_probs.txt", 'w') as file:

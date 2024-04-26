@@ -71,8 +71,6 @@ sentlen = []
 sentprob = []
 
 
-
-
 # Unigram probability
 for sentence in sentences:
     sent = sentence.lower().split()
@@ -98,11 +96,10 @@ for sentence in sentences:
     sentprob.append(prob)
 
 
+1/pow(sentprob[1], 1.0/44)
+
 perplexity_bigram = [1/(pow(prob, 1.0/length)) for prob, length in zip(sentprob, sentlen)]
 perplexity_bigram
-
-
-
 
 
 # Bigram probability smoothed

@@ -14,7 +14,7 @@ from generate import GENERATE
 import random
 import codecs
 
-
+### Smoothed bigram probabilities
 vocab = codecs.open("brown_vocab_100.txt")
 
 #load the indices dictionary

@@ -4,7 +4,7 @@ from generate import GENERATE
 import random
 import codecs
 
-
+#### Code for problem7
 
 ##### Word indices
 
@@ -66,7 +66,7 @@ probs_bigram = normalize(counts, norm='l1', axis=1)
 counts += 0.1
 probs_bigram_smoothed = normalize(counts, norm='l1', axis=1)
 
-##### Generators
+##### Generators, write to txt file
 
 with open("unigram_generation.txt", 'w') as file1, open("bigram_generation.txt", 'w') as file2, open("smoothed_generation.txt", 'w') as file3:
 
