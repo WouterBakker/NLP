@@ -47,6 +47,15 @@ class ParserModel(nn.Module):
         self.hidden_size = hidden_size
         self.embeddings = nn.Parameter(torch.tensor(embeddings))
 
+        self.embed_to_hidden_weight = nn.Parameter(torch.Tensor(self.n_features*self.embed_size,self.hidden_size))
+        nn.init.xavier_uniform_(self.embed_to_hidden_weight)
+        self.embed_to_hidden_bias = nn.Parameter(torch.Tensor(self.hidden_size))
+        nn.init.uniform_(torch.Tensor(self.embed_to_hidden_bias))
+        self.dropout = nn.Dropout(self.dropout_prob)
+        self.hidden_to_logits_weight = nn.Parameter(torch.Tensor(self.hidden_size, self.n_classes))
+        nn.init.xavier_uniform_(self.hidden_to_logits_weight)
+        self.hidden_to_logits_bias = nn.Parameter(torch.Tensor(self.n_classes))
+        nn.init.uniform_(self.hidden_to_logits_bias)
         ### YOUR CODE HERE (~9-10 Lines)
         ### TODO:
         ###     1) Declare `self.embed_to_hidden_weight` and `self.embed_to_hidden_bias` as `nn.Parameter`.
@@ -84,6 +93,9 @@ class ParserModel(nn.Module):
             @return x (Tensor): tensor of embeddings for words represented in w
                                 (batch_size, n_features * embed_size)
         """
+        #x = torch.index_select(self.embeddings, 0, torch.flatten(w))
+        x = self.embeddings[w]
+        x = x.view(w.size()[0] , w.size()[1]*self.embed_size)
 
         ### YOUR CODE HERE (~1-4 Lines)
         ### TODO:
@@ -131,6 +143,12 @@ class ParserModel(nn.Module):
         @return logits (Tensor): tensor of predictions (output after applying the layers of the network)
                                  without applying softmax (batch_size, n_classes)
         """
+        my_lin = torch.matmul(self.embedding_lookup(w), self.embed_to_hidden_weight) + self.embed_to_hidden_bias
+        RELU = nn.ReLU()
+        h = RELU(my_lin)
+        h = self.dropout(h)
+        logits = torch.matmul(h, self.hidden_to_logits_weight) + self.hidden_to_logits_bias
+
         ### YOUR CODE HERE (~3-5 lines)
         ### TODO:
         ###     Complete the forward computation as described in write-up. In addition, include a dropout layer
