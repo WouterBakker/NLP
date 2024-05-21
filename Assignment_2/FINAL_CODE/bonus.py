@@ -19,6 +19,8 @@ probs_unigram = {x:(y/counts_unigram) for x,y in sorted_wordcounts.items() if y 
 # List of included words
 included_words = probs_unigram.keys()
 
+# N = len(included_words)
+
 counts_bigram = defaultdict(lambda: defaultdict(int))
 probs_bigram = defaultdict(lambda: defaultdict(int))
 
@@ -36,10 +38,6 @@ for key, inner_dict in counts_bigram.items():
 
 
 
-
-
-
-
 pmis = {}
 
 cw1w2, cw1, cw2 = [], [], []
@@ -48,14 +46,34 @@ p = []
 
 for x,y in zip(words[:-1], words[1:]):
     if x in included_words and y in included_words: #only calculated probability if word occurs more than 10 times in the corpus
-        p_x = probs_unigram[x]
-        p_y = probs_unigram[y]        
-        p_xy = probs_bigram[x][y]
+        p_x = wordcounts[x]
+        p_y = wordcounts[y]        
+        p_xy = counts_bigram[x][y]
 
         cw1.append(p_x)
         cw2.append(p_y)
         cw1w2.append(p_xy)
         pmis[f"[{x}, {y}]"] = np.log((p_xy*N)/(p_x*p_y))
+
+
+
+# pmis = {}
+
+# cw1w2, cw1, cw2 = [], [], []
+
+# p = []
+
+# for x,y in zip(words[:-1], words[1:]):
+#     if x in included_words and y in included_words: #only calculated probability if word occurs more than 10 times in the corpus
+#         p_x = probs_unigram[x]
+#         p_y = probs_unigram[y]        
+#         p_xy = probs_bigram[x][y]
+
+#         cw1.append(p_x)
+#         cw2.append(p_y)
+#         cw1w2.append(p_xy)
+#         # pmis[f"[{x}, {y}]"] = np.log((p_xy*N)/(p_x*p_y))
+#         pmis[f"[{x}, {y}]"] = np.log((p_xy)/(p_x*p_y))
 
 
 
@@ -69,5 +87,3 @@ most_common_rounded = [(x, np.round(y, 2)) for x,y in most_common]
 # 20 least common items
 least_common = sorted_pmis[-20:]
 least_common_rounded = [(x, np.round(y, 2)) for x,y in least_common]
-
-
